@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: xtream-app
+    restart: unless-stopped
+    ports:
+      - "80:3000"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://localhost:3000/api/my-ip" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s

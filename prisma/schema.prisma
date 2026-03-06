@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model DeviceConfig {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  ipAddress     String   @unique // Public IP of the device
+  authorizedIps String[] // Array of other IPs authorized to auto-login
+  serverUrl     String?
+  username  String?
+  password  String?
+  settings  Json?    // Optional: stores vis, viewMode, bufferSeconds, etc.
+  favorites Json?    // Optional: stores favorites (live, vod, series)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
